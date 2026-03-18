@@ -60,18 +60,38 @@ export default function UploadPage() {
   const handleUpload = async () => {
     if (!file) return;
     setIsUploading(true);
-    await new Promise((r) => setTimeout(r, 2500));
-    setUploads((prev) => [
-      { name: file.name, subject: subject || "General", time: "Just now", status: "Processing" },
-      ...prev,
-    ]);
-    setIsUploading(false);
-    setFile(null);
-    setSubject("");
-    setSemester("");
-    setRegulation("");
-    setSelectedTags([]);
-    toast.success("Document successfully added. You can now ask questions from it.");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("subject", subject || "General");
+      formData.append("semester", semester);
+      formData.append("regulation", regulation);
+      formData.append("tags", JSON.stringify(selectedTags));
+
+      const response = await fetch(
+        "https://awaara.app.n8n.cloud/webhook-test/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
+        { method: "POST", body: formData }
+      );
+
+      if (!response.ok) throw new Error("Webhook failed");
+
+      setUploads((prev) => [
+        { name: file.name, subject: subject || "General", time: "Just now", status: "Processing" },
+        ...prev,
+      ]);
+      setFile(null);
+      setSubject("");
+      setSemester("");
+      setRegulation("");
+      setSelectedTags([]);
+      toast.success("Document successfully added. You can now ask questions from it.");
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("Failed to upload document. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
