@@ -44,11 +44,31 @@ export default function AskAIPage() {
     setInput("");
     setIsTyping(true);
 
-    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      const response = await fetch(
+        "https://awaara.app.n8n.cloud/webhook/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "query", query: text.trim() }),
+        }
+      );
 
-    const aiMsg: Message = { role: "ai", content: MOCK_RESPONSES.default };
-    setMessages((prev) => [...prev, aiMsg]);
-    setIsTyping(false);
+      let aiContent = MOCK_RESPONSES.default;
+      if (response.ok) {
+        const data = await response.json();
+        aiContent = data.response || data.output || data.message || aiContent;
+      }
+
+      const aiMsg: Message = { role: "ai", content: aiContent };
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (error) {
+      console.error("Query error:", error);
+      const aiMsg: Message = { role: "ai", content: MOCK_RESPONSES.default };
+      setMessages((prev) => [...prev, aiMsg]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
