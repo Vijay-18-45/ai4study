@@ -62,16 +62,32 @@ export default function UploadPage() {
     setIsUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("subject", subject || "General");
-      formData.append("semester", semester);
-      formData.append("regulation", regulation);
-      formData.append("tags", JSON.stringify(selectedTags));
+      const reader = new FileReader();
+      const fileBase64 = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve((reader.result as string).split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const payload = {
+        type: "upload",
+        fileName: file.name,
+        fileType: file.type,
+        fileSize: file.size,
+        fileBase64,
+        subject: subject || "General",
+        semester,
+        regulation,
+        tags: selectedTags,
+      };
 
       const response = await fetch(
         "https://awaara.app.n8n.cloud/webhook/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
-        { method: "POST", body: formData }
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
       );
 
       if (!response.ok) throw new Error("Webhook failed");
