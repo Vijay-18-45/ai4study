@@ -70,7 +70,7 @@ export default function UploadPage() {
       formData.append("tags", JSON.stringify(selectedTags));
 
       const response = await fetch(
-        "https://awaara.app.n8n.cloud/webhook-test/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
+        "https://awaara.app.n8n.cloud/webhook/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
         { method: "POST", body: formData }
       );
 
