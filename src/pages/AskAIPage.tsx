@@ -267,7 +267,7 @@ export default function AskAIPage() {
                   >
                     {msg.role === "user" ? (
                       /* User Bubble */
-                      <div className="max-w-[75%] bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-md text-sm leading-relaxed shadow-soft">
+                      <div className="max-w-[85%] sm:max-w-[75%] bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-md text-sm leading-relaxed shadow-soft">
                         {msg.content}
                       </div>
                     ) : (
