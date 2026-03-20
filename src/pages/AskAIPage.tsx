@@ -223,7 +223,7 @@ export default function AskAIPage() {
                 Ask questions from your uploaded study materials to get accurate explanations grounded in your notes.
               </p>
 
-              <div className="grid grid-cols-2 gap-2.5 w-full max-w-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-lg">
                 {SUGGESTIONS.map((s, i) => (
                   <motion.button
                     key={s}
