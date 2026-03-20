@@ -193,7 +193,7 @@ export default function AskAIPage() {
   };
 
   return (
-    <div className="flex h-screen relative">
+    <div className="flex h-screen relative overflow-hidden">
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative">
         <AnimatePresence mode="wait">
