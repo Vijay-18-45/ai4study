@@ -374,7 +374,7 @@ export default function AskAIPage() {
         </AnimatePresence>
 
         {/* Chat Input */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent pt-8 pb-6 px-6">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent pt-8 pb-4 sm:pb-6 px-4 sm:px-6">
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto relative">
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-muted-foreground/40">
