@@ -97,7 +97,7 @@ function SourcePreviewPanel({ source, onClose }: { source: typeof MOCK_REFS[0] |
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 320, opacity: 0 }}
       transition={{ type: "spring", damping: 25, stiffness: 300 }}
-      className="fixed right-0 top-0 bottom-0 w-[340px] bg-card/95 backdrop-blur-xl border-l border-border/40 z-40 flex flex-col shadow-premium"
+      className="fixed right-0 top-0 bottom-0 w-[85vw] sm:w-[340px] bg-card/95 backdrop-blur-xl border-l border-border/40 z-40 flex flex-col shadow-premium"
     >
       <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
         <div className="flex items-center gap-2.5">
