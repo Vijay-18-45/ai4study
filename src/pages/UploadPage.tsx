@@ -127,7 +127,7 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-6 pt-16 pb-20">
+    <div className="min-h-screen flex flex-col items-center px-4 sm:px-6 pt-14 md:pt-16 pb-20">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
