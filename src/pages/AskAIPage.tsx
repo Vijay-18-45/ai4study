@@ -205,7 +205,7 @@ export default function AskAIPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="flex-1 flex flex-col items-center justify-center max-w-xl mx-auto px-6"
+              className="flex-1 flex flex-col items-center justify-center max-w-xl mx-auto px-4 sm:px-6"
             >
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
