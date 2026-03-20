@@ -246,7 +246,7 @@ export default function AskAIPage() {
               key="chat"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex-1 overflow-y-auto scrollbar-none px-6 pt-6 pb-36"
+              className="flex-1 overflow-y-auto scrollbar-none px-4 sm:px-6 pt-6 pb-36"
             >
               {/* Header */}
               <div className="max-w-3xl mx-auto mb-6">
