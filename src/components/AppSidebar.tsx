@@ -1,7 +1,10 @@
-import { Upload, MessageSquare, Sparkles } from "lucide-react";
+import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/hooks/use-theme";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
 
 const navItems = [
   { title: "Upload Documents", url: "/", icon: Upload },
@@ -10,17 +13,27 @@ const navItems = [
 
 export function AppSidebar() {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
+  const isMobile = useIsMobile();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  return (
-    <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-card/80 backdrop-blur-xl border-r border-border/40 flex flex-col py-6 px-4 scrollbar-none overflow-y-auto z-30">
+  const sidebarContent = (
+    <>
       {/* Logo */}
-      <div className="px-3 mb-10 flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
-          <Sparkles className="h-4 w-4 text-primary-foreground" strokeWidth={2} />
+      <div className="px-3 mb-10 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
+            <Sparkles className="h-4 w-4 text-primary-foreground" strokeWidth={2} />
+          </div>
+          <h1 className="text-lg font-bold tracking-tight text-foreground">
+            Study<span className="text-primary">AI</span>
+          </h1>
         </div>
-        <h1 className="text-lg font-bold tracking-tight text-foreground">
-          Study<span className="text-primary">AI</span>
-        </h1>
+        {isMobile && (
+          <button onClick={() => setMobileOpen(false)} className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground">
+            <X className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
@@ -32,6 +45,7 @@ export function AppSidebar() {
               key={item.url}
               to={item.url}
               end
+              onClick={() => isMobile && setMobileOpen(false)}
               className={`relative flex items-center gap-3 h-11 px-3.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
                 isActive
                   ? "bg-primary/10 text-primary"
@@ -54,13 +68,67 @@ export function AppSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="mt-auto pt-6 px-3">
+      <div className="mt-auto pt-6 px-3 space-y-3">
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center gap-3 h-10 px-3.5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200"
+        >
+          {theme === "dark" ? (
+            <Sun className="h-[18px] w-[18px]" strokeWidth={1.8} />
+          ) : (
+            <Moon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+          )}
+          <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+        </button>
         <div className="p-3.5 rounded-xl bg-accent/60 border border-border/30">
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             Your library, now with a voice.
           </p>
         </div>
       </div>
+    </>
+  );
+
+  // Mobile: hamburger + overlay drawer
+  if (isMobile) {
+    return (
+      <>
+        <button
+          onClick={() => setMobileOpen(true)}
+          className="fixed top-4 left-4 z-50 p-2 rounded-xl bg-card shadow-card border border-border/40"
+        >
+          <Menu className="h-5 w-5 text-foreground" />
+        </button>
+        <AnimatePresence>
+          {mobileOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setMobileOpen(false)}
+                className="fixed inset-0 bg-background/60 backdrop-blur-sm z-40"
+              />
+              <motion.aside
+                initial={{ x: -280 }}
+                animate={{ x: 0 }}
+                exit={{ x: -280 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="fixed left-0 top-0 bottom-0 w-[260px] bg-card/95 backdrop-blur-xl border-r border-border/40 flex flex-col py-6 px-4 z-50"
+              >
+                {sidebarContent}
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
+      </>
+    );
+  }
+
+  // Desktop: fixed sidebar
+  return (
+    <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-card/80 backdrop-blur-xl border-r border-border/40 flex flex-col py-6 px-4 scrollbar-none overflow-y-auto z-30">
+      {sidebarContent}
     </aside>
   );
 }
