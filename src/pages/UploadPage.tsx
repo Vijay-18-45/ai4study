@@ -127,7 +127,7 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-6 pt-16 pb-20">
+    <div className="min-h-screen flex flex-col items-center px-4 sm:px-6 pt-14 md:pt-16 pb-20">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -316,7 +316,7 @@ export default function UploadPage() {
       </motion.div>
 
       {/* Upload Notifications */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 w-80">
+      <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col gap-3 w-72 sm:w-80">
         <AnimatePresence>
           {notifications.map((notif) => (
             <motion.div

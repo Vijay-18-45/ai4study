@@ -97,7 +97,7 @@ function SourcePreviewPanel({ source, onClose }: { source: typeof MOCK_REFS[0] |
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 320, opacity: 0 }}
       transition={{ type: "spring", damping: 25, stiffness: 300 }}
-      className="fixed right-0 top-0 bottom-0 w-[340px] bg-card/95 backdrop-blur-xl border-l border-border/40 z-40 flex flex-col shadow-premium"
+      className="fixed right-0 top-0 bottom-0 w-[85vw] sm:w-[340px] bg-card/95 backdrop-blur-xl border-l border-border/40 z-40 flex flex-col shadow-premium"
     >
       <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
         <div className="flex items-center gap-2.5">
@@ -193,7 +193,7 @@ export default function AskAIPage() {
   };
 
   return (
-    <div className="flex h-screen relative">
+    <div className="flex h-screen relative overflow-hidden">
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative">
         <AnimatePresence mode="wait">
@@ -205,7 +205,7 @@ export default function AskAIPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="flex-1 flex flex-col items-center justify-center max-w-xl mx-auto px-6"
+              className="flex-1 flex flex-col items-center justify-center max-w-xl mx-auto px-4 sm:px-6"
             >
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -223,7 +223,7 @@ export default function AskAIPage() {
                 Ask questions from your uploaded study materials to get accurate explanations grounded in your notes.
               </p>
 
-              <div className="grid grid-cols-2 gap-2.5 w-full max-w-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-lg">
                 {SUGGESTIONS.map((s, i) => (
                   <motion.button
                     key={s}
@@ -246,7 +246,7 @@ export default function AskAIPage() {
               key="chat"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex-1 overflow-y-auto scrollbar-none px-6 pt-6 pb-36"
+              className="flex-1 overflow-y-auto scrollbar-none px-4 sm:px-6 pt-6 pb-36"
             >
               {/* Header */}
               <div className="max-w-3xl mx-auto mb-6">
@@ -267,7 +267,7 @@ export default function AskAIPage() {
                   >
                     {msg.role === "user" ? (
                       /* User Bubble */
-                      <div className="max-w-[75%] bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-md text-sm leading-relaxed shadow-soft">
+                      <div className="max-w-[85%] sm:max-w-[75%] bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-md text-sm leading-relaxed shadow-soft">
                         {msg.content}
                       </div>
                     ) : (
@@ -374,7 +374,7 @@ export default function AskAIPage() {
         </AnimatePresence>
 
         {/* Chat Input */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent pt-8 pb-6 px-6">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent pt-8 pb-4 sm:pb-6 px-4 sm:px-6">
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto relative">
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-muted-foreground/40">
