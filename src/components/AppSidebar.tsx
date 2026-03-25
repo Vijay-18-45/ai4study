@@ -1,14 +1,18 @@
-import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X } from "lucide-react";
+import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X, Settings, LogOut } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { useTheme } from "@/hooks/use-theme";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { logout } from "@/services/authService";
+import { toast } from "sonner";
 
 const navItems = [
   { title: "Upload Documents", url: "/", icon: Upload },
   { title: "Ask AI", url: "/ask", icon: MessageSquare },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 const SIDEBAR_KEY = "studyai-sidebar-open";
