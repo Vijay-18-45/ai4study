@@ -6,49 +6,49 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
+    --background: 220 20% 97%;
+    --foreground: 222 47% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 222 47% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 222 47% 14%;
 
     --primary: 226 70% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 220 20% 93%;
+    --secondary-foreground: 222 47% 14%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 220 20% 93%;
+    --muted-foreground: 215 25% 45%;
 
-    --accent: 210 20% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 220 20% 93%;
+    --accent-foreground: 222 47% 14%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
+    --border: 216 20% 88%;
+    --input: 216 20% 88%;
     --ring: 226 70% 55%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    --sidebar-background: 210 20% 96%;
-    --sidebar-foreground: 215 16% 47%;
+    --sidebar-background: 222 25% 93%;
+    --sidebar-foreground: 215 25% 45%;
     --sidebar-primary: 226 70% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 100%;
     --sidebar-accent-foreground: 226 70% 55%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 216 20% 88%;
     --sidebar-ring: 226 70% 55%;
 
     /* Custom tokens */
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-    --shadow-md: 0 0 0 1px rgba(0,0,0,0.05), 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.04);
-    --shadow-premium: 0 0 0 1px rgba(0,0,0,0.04), 0 10px 15px -3px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.04);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+    --shadow-md: 0 0 0 1px rgba(0,0,0,0.03), 0 4px 12px -2px rgba(0,0,0,0.06);
+    --shadow-premium: 0 0 0 1px rgba(0,0,0,0.03), 0 8px 24px -4px rgba(0,0,0,0.08);
     --gradient-primary: linear-gradient(135deg, hsl(226, 70%, 55%), hsl(217, 91%, 60%));
 
     --success: 152 69% 41%;
@@ -106,8 +106,8 @@
 @layer base {
   * {
     @apply border-border;
-    transition-property: background-color, border-color, color, box-shadow, opacity;
-    transition-duration: 0.25s;
+    transition-property: background-color, border-color, color, box-shadow, opacity, transform;
+    transition-duration: 0.2s;
     transition-timing-function: ease;
   }
 
@@ -125,6 +125,11 @@
 
   code, .font-mono {
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Accessibility: visible focus rings */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 }
 
@@ -150,5 +155,14 @@
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Dashed border animation for upload */
+  @keyframes dash-border {
+    0% { background-position: 0 0, 100% 0, 100% 100%, 0 100%; }
+    100% { background-position: 100% 0, 100% 100%, 0 100%, 0 0; }
+  }
+  .animate-dash-border:hover {
+    animation: dash-border 6s linear infinite;
   }
 }

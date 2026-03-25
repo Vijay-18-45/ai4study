@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Copy, RefreshCw, FileText, ChevronRight, ChevronLeft, BookOpen, Sparkles, CheckCircle2 } from "lucide-react";
+import { Send, Copy, RefreshCw, FileText, ChevronRight, ChevronDown, BookOpen, Sparkles, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
@@ -14,16 +14,6 @@ const SUGGESTIONS = [
   "Explain normalization",
   "Quick revision for OS",
 ];
-
-const MOCK_REFS = [
-  { name: "DBMS Unit 3 Notes.pdf", subject: "Database Systems", tag: "Notes", snippet: "Normalization reduces redundancy by decomposing relations into smaller tables based on functional dependencies...", confidence: 92 },
-  { name: "OS PYQ 2023.pdf", subject: "Operating Systems", tag: "PYQ", snippet: "Process scheduling algorithms determine which process runs next. Round Robin uses time quantum for fair allocation...", confidence: 78 },
-  { name: "CN Important Questions.docx", subject: "Computer Networks", tag: "Important Questions", snippet: "OSI model layers provide a framework for network communication protocols including transport and session layers...", confidence: 65 },
-];
-
-const MOCK_RESPONSES: Record<string, string> = {
-  default: `Based on your uploaded documents, here's what I found:\n\n**Key Concepts:**\n\n1. **Normalization** — The process of organizing data to reduce redundancy. Your notes cover 1NF through BCNF with examples.\n\n2. **Transaction Management** — ACID properties ensure database reliability. This topic appears in 3 of your uploaded PYQs.\n\n3. **Indexing** — B+ trees and hash indexing are covered extensively in Unit 4.\n\nI've cross-referenced this with your PYQ papers and these topics have appeared consistently over the last 4 semesters.`,
-};
 
 function StreamingText({ text, onComplete }: { text: string; onComplete: () => void }) {
   const [displayed, setDisplayed] = useState("");
@@ -61,12 +51,12 @@ function StreamingText({ text, onComplete }: { text: string; onComplete: () => v
   );
 }
 
-function SourceCard({ source, onClick }: { source: typeof MOCK_REFS[0]; onClick: () => void }) {
+function SourceCard({ source, onClick }: { source: { name: string; subject: string; tag: string; snippet: string; confidence: number }; onClick: () => void }) {
   return (
     <motion.button
       whileHover={{ y: -2, scale: 1.01 }}
       onClick={onClick}
-      className="flex-shrink-0 w-[220px] bg-card rounded-xl border border-border/50 p-3.5 text-left transition-all duration-200 hover:border-primary/30 hover:shadow-card group"
+      className="flex-shrink-0 w-[220px] bg-card rounded-[var(--radius)] border border-border p-4 text-left transition-all duration-200 hover:border-primary/30 hover:shadow-card group min-h-[44px]"
     >
       <div className="flex items-center gap-2 mb-2">
         <div className="w-7 h-7 rounded-lg bg-primary/8 flex items-center justify-center">
@@ -88,7 +78,7 @@ function SourceCard({ source, onClick }: { source: typeof MOCK_REFS[0]; onClick:
   );
 }
 
-function SourcePreviewPanel({ source, onClose }: { source: typeof MOCK_REFS[0] | null; onClose: () => void }) {
+function SourcePreviewPanel({ source, onClose }: { source: { name: string; subject: string; tag: string; snippet: string; confidence: number } | null; onClose: () => void }) {
   if (!source) return null;
 
   return (
@@ -109,12 +99,12 @@ function SourcePreviewPanel({ source, onClose }: { source: typeof MOCK_REFS[0] |
             <span className="text-[10px] text-muted-foreground">{source.subject}</span>
           </div>
         </div>
-        <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={onClose} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
           <ChevronRight className="h-4 w-4" />
         </button>
       </div>
       <div className="flex-1 overflow-y-auto p-5 scrollbar-none">
-        <div className="bg-accent/60 rounded-xl p-4 border border-border/30">
+        <div className="bg-accent/60 rounded-[var(--radius)] p-4 border border-border/30">
           <p className="text-[11px] font-medium text-primary mb-2">Relevant Excerpt</p>
           <p className="text-sm text-foreground leading-[1.7]">{source.snippet}</p>
         </div>
@@ -128,12 +118,48 @@ function SourcePreviewPanel({ source, onClose }: { source: typeof MOCK_REFS[0] |
   );
 }
 
+function CollapsibleSources({ sources, onSourceClick }: { sources: { name: string; subject: string; tag: string; snippet: string; confidence: number }[]; onSourceClick: (s: any) => void }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mt-4">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-wider px-1 min-h-[44px] hover:text-foreground transition-colors"
+      >
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown className="h-3.5 w-3.5" />
+        </motion.span>
+        Sources ({sources.length})
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="flex gap-2.5 overflow-x-auto scrollbar-none pb-1 pt-2">
+              {sources.map((ref) => (
+                <SourceCard key={ref.name} source={ref} onClick={() => onSourceClick(ref)} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function AskAIPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
-  const [previewSource, setPreviewSource] = useState<typeof MOCK_REFS[0] | null>(null);
+  const [previewSource, setPreviewSource] = useState<{ name: string; subject: string; tag: string; snippet: string; confidence: number } | null>(null);
+  const [sources] = useState<{ name: string; subject: string; tag: string; snippet: string; confidence: number }[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMessages = messages.length > 0;
@@ -159,7 +185,7 @@ export default function AskAIPage() {
         }
       );
 
-      let aiContent = MOCK_RESPONSES.default;
+      let aiContent = "I couldn't find relevant information in your uploaded documents. Please upload study materials first.";
       if (response.ok) {
         const data = await response.json();
         aiContent = data.response || data.output || data.message || aiContent;
@@ -172,7 +198,7 @@ export default function AskAIPage() {
       });
     } catch (error) {
       console.error("Query error:", error);
-      const aiMsg: Message = { role: "ai", content: MOCK_RESPONSES.default };
+      const aiMsg: Message = { role: "ai", content: "Sorry, I couldn't process your request. Please try again." };
       setMessages((prev) => {
         setStreamingIndex(prev.length);
         return [...prev, aiMsg];
@@ -216,14 +242,14 @@ export default function AskAIPage() {
                 <Sparkles className="h-7 w-7 text-primary-foreground" />
               </motion.div>
 
-              <h1 className="text-3xl font-bold text-foreground mb-3 text-center tracking-tight">
+              <h1 className="text-3xl font-semibold text-foreground mb-3 text-center tracking-tight">
                 Start learning with AI
               </h1>
               <p className="text-muted-foreground text-base mb-12 text-center leading-relaxed max-w-md">
                 Ask questions from your uploaded study materials to get accurate explanations grounded in your notes.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
                 {SUGGESTIONS.map((s, i) => (
                   <motion.button
                     key={s}
@@ -233,7 +259,7 @@ export default function AskAIPage() {
                     whileHover={{ scale: 1.02, y: -1 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => sendMessage(s)}
-                    className="px-4 py-3.5 rounded-xl bg-card border border-border/50 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 hover:shadow-card transition-all duration-200 text-left"
+                    className="px-4 py-4 min-h-[44px] rounded-[var(--radius)] bg-card border border-border text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 hover:shadow-card transition-all duration-200 text-left"
                   >
                     <span className="text-primary mr-1.5">→</span> {s}
                   </motion.button>
@@ -256,7 +282,7 @@ export default function AskAIPage() {
                 </div>
               </div>
 
-              <div className="max-w-3xl mx-auto space-y-5">
+              <div className="max-w-3xl mx-auto space-y-6">
                 {messages.map((msg, i) => (
                   <motion.div
                     key={i}
@@ -267,13 +293,13 @@ export default function AskAIPage() {
                   >
                     {msg.role === "user" ? (
                       /* User Bubble */
-                      <div className="max-w-[85%] sm:max-w-[75%] bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-md text-sm leading-relaxed shadow-soft">
+                      <div className="max-w-[85%] sm:max-w-[75%] bg-primary text-primary-foreground px-5 py-3.5 rounded-2xl rounded-br-md text-sm leading-relaxed shadow-soft">
                         {msg.content}
                       </div>
                     ) : (
                       /* AI Response */
                       <div className="max-w-full w-full group">
-                        <div className="bg-card rounded-2xl p-6 shadow-card border border-border/30">
+                        <div className="bg-card rounded-2xl p-6 shadow-card border border-border/40">
                           <div className="text-sm leading-[1.8] text-foreground/90 whitespace-pre-wrap">
                             {streamingIndex === i ? (
                               <StreamingText
@@ -292,7 +318,7 @@ export default function AskAIPage() {
                           </div>
                         </div>
 
-                        {/* Actions + Status */}
+                        {/* Actions */}
                         <div className="flex items-center justify-between mt-2.5 px-1">
                           <div className="flex items-center gap-1.5">
                             <CheckCircle2 className="h-3 w-3 text-success" />
@@ -303,14 +329,14 @@ export default function AskAIPage() {
                           <div className="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                             <button
                               onClick={() => copyText(msg.content)}
-                              className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground/50 hover:text-foreground transition-colors"
+                              className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground/50 hover:text-foreground transition-colors"
                               title="Copy"
                             >
                               <Copy className="h-3.5 w-3.5" />
                             </button>
                             <button
                               onClick={() => sendMessage(messages[i - 1]?.content || "")}
-                              className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground/50 hover:text-foreground transition-colors"
+                              className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground/50 hover:text-foreground transition-colors"
                               title="Regenerate"
                             >
                               <RefreshCw className="h-3.5 w-3.5" />
@@ -318,23 +344,9 @@ export default function AskAIPage() {
                           </div>
                         </div>
 
-                        {/* Sources */}
-                        {streamingIndex !== i && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 6 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.3 }}
-                            className="mt-4"
-                          >
-                            <p className="text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-wider mb-2.5 px-1">
-                              Sources
-                            </p>
-                            <div className="flex gap-2.5 overflow-x-auto scrollbar-none pb-1">
-                              {MOCK_REFS.map((ref) => (
-                                <SourceCard key={ref.name} source={ref} onClick={() => setPreviewSource(ref)} />
-                              ))}
-                            </div>
-                          </motion.div>
+                        {/* Collapsible Sources - only if real sources exist */}
+                        {streamingIndex !== i && sources.length > 0 && (
+                          <CollapsibleSources sources={sources} onSourceClick={setPreviewSource} />
                         )}
                       </div>
                     )}
@@ -350,16 +362,15 @@ export default function AskAIPage() {
                   >
                     <div className="flex items-center gap-2.5 px-1">
                       <div className="flex gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-dot-1" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-dot-2" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-dot-3" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" style={{ animationDelay: "0s" }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" style={{ animationDelay: "0.15s" }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" style={{ animationDelay: "0.3s" }} />
                       </div>
                       <span className="text-xs font-medium text-primary/80">
                         Searching your study materials...
                       </span>
                     </div>
-                    {/* Skeleton placeholder */}
-                    <div className="bg-card rounded-2xl p-6 shadow-card border border-border/30 space-y-3 min-h-[120px]">
+                    <div className="bg-card rounded-2xl p-6 shadow-card border border-border/40 space-y-3 min-h-[120px]">
                       <div className="h-3 w-3/4 bg-accent rounded-md animate-pulse" />
                       <div className="h-3 w-full bg-accent rounded-md animate-pulse" />
                       <div className="h-3 w-5/6 bg-accent rounded-md animate-pulse" />
@@ -386,25 +397,16 @@ export default function AskAIPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask a question about your notes..."
-                className="w-full bg-card rounded-2xl shadow-premium pl-11 pr-14 py-4 text-sm ring-1 ring-border/40 focus:outline-none focus:ring-2 focus:ring-primary/25 transition-all duration-200 text-foreground placeholder:text-muted-foreground/50"
+                className="w-full bg-card rounded-[var(--radius)] shadow-card pl-11 pr-14 py-4 min-h-[52px] text-sm ring-1 ring-border/60 focus:outline-none focus:ring-2 focus:ring-primary/25 transition-all duration-200 text-foreground placeholder:text-muted-foreground/50"
               />
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all duration-150 active:scale-95 disabled:opacity-30 disabled:scale-100 shadow-soft"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center bg-gradient-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all duration-200 active:scale-95 disabled:opacity-30 disabled:scale-100 shadow-soft"
               >
                 <Send className="h-4 w-4" />
               </button>
             </div>
-            {input.length > 0 && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute right-16 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground/40"
-              >
-                {input.length}
-              </motion.span>
-            )}
           </form>
         </div>
       </div>

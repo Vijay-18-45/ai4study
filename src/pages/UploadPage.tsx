@@ -100,14 +100,12 @@ export default function UploadPage() {
         ...prev,
       ]);
 
-      // Auto-mark as ready after 3s
       setTimeout(() => {
         setNotifications((prev) =>
           prev.map((n) => (n.id === currentId ? { ...n, status: "Ready" } : n))
         );
       }, 3000);
 
-      // Auto-dismiss after 8s
       setTimeout(() => {
         setNotifications((prev) => prev.filter((n) => n.id !== currentId));
       }, 8000);
@@ -126,6 +124,9 @@ export default function UploadPage() {
     }
   };
 
+  const inputClasses =
+    "peer w-full h-[52px] min-h-[44px] px-4 pt-5 pb-2 rounded-[var(--radius)] bg-card border border-border text-foreground text-sm focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all placeholder-transparent";
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 sm:px-6 pt-14 md:pt-16 pb-20">
       {/* Header */}
@@ -135,7 +136,7 @@ export default function UploadPage() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="text-center mb-12 max-w-lg"
       >
-        <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
+        <h1 className="text-3xl font-semibold text-foreground mb-3 tracking-tight">
           Upload Study Materials
         </h1>
         <p className="text-muted-foreground text-base leading-relaxed">
@@ -156,15 +157,15 @@ export default function UploadPage() {
           onDragOver={handleDrag}
           onDragLeave={handleDrag}
           onDrop={handleDrop}
-          className={`group relative bg-card rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300 overflow-hidden ${
+          className={`group relative bg-card rounded-[var(--radius)] border-2 border-dashed cursor-pointer transition-all duration-200 overflow-hidden ${
             isDragging
               ? "border-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] scale-[1.01]"
               : file
               ? "border-success/50 shadow-soft"
-              : "border-border/60 hover:border-primary/40 hover:shadow-card hover:scale-[1.005]"
+              : "border-border hover:border-primary/40 hover:shadow-card hover:scale-[1.005]"
           }`}
         >
-          <div className="flex flex-col items-center gap-4 py-16 px-8">
+          <div className="flex flex-col items-center gap-4 py-20 px-8">
             {file ? (
               <>
                 <motion.div
@@ -183,9 +184,13 @@ export default function UploadPage() {
               </>
             ) : (
               <>
-                <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
-                  <CloudUpload className="h-7 w-7 text-muted-foreground group-hover:text-primary transition-colors duration-300" strokeWidth={1.5} />
-                </div>
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200"
+                >
+                  <CloudUpload className="h-7 w-7 text-muted-foreground group-hover:text-primary transition-colors duration-200" strokeWidth={1.5} />
+                </motion.div>
                 <div className="text-center">
                   <p className="text-foreground font-semibold text-[15px]">
                     Drag & drop your study documents
@@ -203,7 +208,7 @@ export default function UploadPage() {
         </div>
 
         {/* Metadata Form */}
-        <div className="mt-8 space-y-4">
+        <div className="mt-8 space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="relative">
               <input
@@ -211,9 +216,9 @@ export default function UploadPage() {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder=" "
-                className="peer w-full h-13 px-4 pt-5 pb-2 rounded-xl bg-card border border-border/60 text-foreground text-sm focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all placeholder-transparent"
+                className={inputClasses}
               />
-              <label className="absolute left-4 top-2 text-[11px] font-medium text-muted-foreground/70 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-muted-foreground/50 peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-primary pointer-events-none">
+              <label className="absolute left-4 top-2 text-[11px] font-medium text-muted-foreground transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-muted-foreground/50 peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-primary pointer-events-none">
                 Subject Name
               </label>
             </div>
@@ -221,14 +226,14 @@ export default function UploadPage() {
               <select
                 value={semester}
                 onChange={(e) => setSemester(e.target.value)}
-                className="w-full h-13 px-4 pt-5 pb-2 rounded-xl bg-card border border-border/60 text-foreground text-sm focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all appearance-none cursor-pointer"
+                className="w-full h-[52px] min-h-[44px] px-4 pt-5 pb-2 rounded-[var(--radius)] bg-card border border-border text-foreground text-sm focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all appearance-none cursor-pointer"
               >
                 <option value="">Select semester</option>
                 {SEMESTERS.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
-              <label className="absolute left-4 top-2 text-[11px] font-medium text-muted-foreground/70 pointer-events-none">
+              <label className="absolute left-4 top-2 text-[11px] font-medium text-muted-foreground pointer-events-none">
                 Semester
               </label>
             </div>
@@ -240,17 +245,17 @@ export default function UploadPage() {
               value={regulation}
               onChange={(e) => setRegulation(e.target.value)}
               placeholder=" "
-              className="peer w-full h-13 px-4 pt-5 pb-2 rounded-xl bg-card border border-border/60 text-foreground text-sm focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all placeholder-transparent"
+              className={inputClasses}
             />
-            <label className="absolute left-4 top-2 text-[11px] font-medium text-muted-foreground/70 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-muted-foreground/50 peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-primary pointer-events-none">
+            <label className="absolute left-4 top-2 text-[11px] font-medium text-muted-foreground transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-muted-foreground/50 peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-primary pointer-events-none">
               Regulation (e.g., R2021)
             </label>
           </div>
 
           {/* Tags */}
           <div>
-            <p className="text-[11px] font-medium text-muted-foreground/70 mb-2.5 ml-1">Tags</p>
-            <div className="flex flex-wrap gap-2">
+            <p className="text-[11px] font-medium text-muted-foreground mb-3 ml-1">Tags</p>
+            <div className="flex flex-wrap gap-2.5">
               {TAGS.map((tag) => {
                 const active = selectedTags.includes(tag);
                 return (
@@ -258,10 +263,10 @@ export default function UploadPage() {
                     key={tag}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => toggleTag(tag)}
-                    className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 border ${
+                    className={`px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium transition-all duration-200 border ${
                       active
-                        ? "bg-gradient-primary text-primary-foreground border-transparent shadow-md"
-                        : "bg-card border-border/60 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                        ? "bg-primary text-primary-foreground border-primary shadow-soft"
+                        : "bg-card border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
                     }`}
                   >
                     {tag}
@@ -278,15 +283,15 @@ export default function UploadPage() {
             whileTap={{ scale: 0.97 }}
             onClick={handleUpload}
             disabled={!file || isUploading}
-            className="w-full sm:w-auto bg-gradient-primary text-primary-foreground font-semibold py-3.5 px-10 rounded-xl shadow-lg hover:shadow-xl hover:opacity-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none text-sm"
+            className="w-full min-h-[52px] bg-gradient-primary text-primary-foreground font-semibold py-4 px-10 rounded-[var(--radius)] shadow-lg hover:shadow-[0_8px_24px_-4px_hsl(226,70%,55%,0.35)] hover:brightness-110 active:brightness-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none text-[15px]"
           >
             {isUploading ? (
-              <span className="flex items-center gap-2.5">
+              <span className="flex items-center justify-center gap-2.5">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Processing document...
               </span>
             ) : (
-              <span className="flex items-center gap-2">
+              <span className="flex items-center justify-center gap-2">
                 <Upload className="h-4 w-4" strokeWidth={2} />
                 Upload & Train AI
               </span>
@@ -299,9 +304,9 @@ export default function UploadPage() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="w-full max-w-sm"
+                className="w-full"
               >
-                <div className="h-1 w-full bg-accent rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
                   <motion.div
                     className="h-full bg-gradient-primary rounded-full"
                     initial={{ width: "0%" }}
@@ -325,7 +330,7 @@ export default function UploadPage() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-card rounded-xl shadow-premium border border-border/40 p-4 flex items-start gap-3"
+              className="bg-card rounded-[var(--radius)] shadow-premium border border-border/40 p-4 flex items-start gap-3"
             >
               <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                 notif.status === "Ready" ? "bg-success/10" : "bg-primary/10"
@@ -353,7 +358,7 @@ export default function UploadPage() {
               </div>
               <button
                 onClick={() => dismissNotification(notif.id)}
-                className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                className="p-1 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground/40 hover:text-muted-foreground transition-colors"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
