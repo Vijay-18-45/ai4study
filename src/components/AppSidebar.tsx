@@ -149,6 +149,17 @@ export function AppSidebar() {
           </AnimatePresence>
           <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
         </button>
+        <button
+          onClick={async () => {
+            await logout();
+            toast.success("Signed out");
+            navigate("/login");
+          }}
+          className="w-full flex items-center gap-3 h-10 px-3.5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-200"
+        >
+          <LogOut className="h-[18px] w-[18px]" strokeWidth={1.8} />
+          <span>Sign Out</span>
+        </button>
         <div className="p-3.5 rounded-xl bg-accent/60 border border-border/30">
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             Your library, now with a voice.
