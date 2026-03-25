@@ -18,6 +18,7 @@ const navItems = [
 const SIDEBAR_KEY = "studyai-sidebar-open";
 
 export function AppSidebar() {
+  const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const isMobile = useIsMobile();
