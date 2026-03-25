@@ -1,19 +1,24 @@
-import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X } from "lucide-react";
+import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X, Settings, LogOut } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { useTheme } from "@/hooks/use-theme";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { logout } from "@/services/authService";
+import { toast } from "sonner";
 
 const navItems = [
   { title: "Upload Documents", url: "/", icon: Upload },
   { title: "Ask AI", url: "/ask", icon: MessageSquare },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 const SIDEBAR_KEY = "studyai-sidebar-open";
 
 export function AppSidebar() {
+  const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const isMobile = useIsMobile();
@@ -143,6 +148,17 @@ export function AppSidebar() {
             </motion.span>
           </AnimatePresence>
           <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+        </button>
+        <button
+          onClick={async () => {
+            await logout();
+            toast.success("Signed out");
+            navigate("/login");
+          }}
+          className="w-full flex items-center gap-3 h-10 px-3.5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-200"
+        >
+          <LogOut className="h-[18px] w-[18px]" strokeWidth={1.8} />
+          <span>Sign Out</span>
         </button>
         <div className="p-3.5 rounded-xl bg-accent/60 border border-border/30">
           <p className="text-[11px] text-muted-foreground leading-relaxed">
