@@ -86,7 +86,7 @@ export default function UploadPage() {
       };
 
       const response = await fetch(
-        "https://awaara.app.n8n.cloud/webhook/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
+        "https://studyai4you.app.n8n.cloud/webhook/3968e79c-0056-4c7d-a2fd-9ce8e1251bc2",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
