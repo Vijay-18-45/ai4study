@@ -129,6 +129,10 @@ export default function UploadPage() {
   const inputClasses =
     "peer w-full h-[52px] min-h-[44px] px-4 pt-5 pb-2 rounded-[var(--radius)] bg-card border border-border text-foreground text-sm focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all placeholder-transparent";
 
+  if (!adminAuth) {
+    return <AdminGate onAuthenticated={() => setAdminAuth(true)} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 sm:px-6 pt-14 md:pt-16 pb-20">
       {/* Header */}
