@@ -17,6 +17,7 @@ interface UploadNotification {
 let notifId = 0;
 
 export default function UploadPage() {
+  const [adminAuth, setAdminAuth] = useState(() => sessionStorage.getItem("admin_authenticated") === "true");
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [subject, setSubject] = useState("");
