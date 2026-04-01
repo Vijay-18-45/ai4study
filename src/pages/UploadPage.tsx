@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { Upload, FileText, Check, Loader2, X, CloudUpload } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import AdminGate from "@/components/AdminGate";
 
 const TAGS = ["PYQ", "Notes", "Important Questions", "Syllabus"];
 const SEMESTERS = ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"];
