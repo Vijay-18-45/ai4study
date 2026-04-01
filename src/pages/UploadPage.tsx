@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { Upload, FileText, Check, Loader2, X, CloudUpload } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import AdminGate from "@/components/AdminGate";
 
 const TAGS = ["PYQ", "Notes", "Important Questions", "Syllabus"];
 const SEMESTERS = ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"];
@@ -16,6 +17,7 @@ interface UploadNotification {
 let notifId = 0;
 
 export default function UploadPage() {
+  const [adminAuth, setAdminAuth] = useState(() => sessionStorage.getItem("admin_authenticated") === "true");
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [subject, setSubject] = useState("");
@@ -126,6 +128,10 @@ export default function UploadPage() {
 
   const inputClasses =
     "peer w-full h-[52px] min-h-[44px] px-4 pt-5 pb-2 rounded-[var(--radius)] bg-card border border-border text-foreground text-sm focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all placeholder-transparent";
+
+  if (!adminAuth) {
+    return <AdminGate onAuthenticated={() => setAdminAuth(true)} />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 sm:px-6 pt-14 md:pt-16 pb-20">
