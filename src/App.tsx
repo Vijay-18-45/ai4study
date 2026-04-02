@@ -10,6 +10,7 @@ import AskAIPage from "@/pages/AskAIPage";
 import LoginPage from "@/pages/LoginPage";
 import VerifyEmailPage from "@/pages/VerifyEmailPage";
 import ProfileSettingsPage from "@/pages/ProfileSettingsPage";
+import StudyMaterialsPage from "@/pages/StudyMaterialsPage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <AppLayout><AskAIPage /></AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/materials"
+              element={
+                <ProtectedRoute>
+                  <AppLayout><StudyMaterialsPage /></AppLayout>
                 </ProtectedRoute>
               }
             />

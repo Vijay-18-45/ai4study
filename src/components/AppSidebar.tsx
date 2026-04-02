@@ -1,4 +1,4 @@
-import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X, Settings, LogOut } from "lucide-react";
+import { Upload, MessageSquare, Sparkles, Moon, Sun, Menu, X, Settings, LogOut, BookOpen } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 const navItems = [
   { title: "Upload Documents", url: "/", icon: Upload },
   { title: "Ask AI", url: "/ask", icon: MessageSquare },
+  { title: "Study Materials", url: "/materials", icon: BookOpen },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
