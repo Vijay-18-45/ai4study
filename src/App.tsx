@@ -41,6 +41,14 @@ const App = () => (
               }
             />
             <Route
+              path="/materials"
+              element={
+                <ProtectedRoute>
+                  <AppLayout><StudyMaterialsPage /></AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/settings"
               element={
                 <ProtectedRoute>
