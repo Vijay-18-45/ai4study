@@ -12,6 +12,7 @@ import { toast } from "sonner";
 const navItems = [
   { title: "Upload Documents", url: "/", icon: Upload },
   { title: "Ask AI", url: "/ask", icon: MessageSquare },
+  { title: "Study Materials", url: "/materials", icon: BookOpen },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
