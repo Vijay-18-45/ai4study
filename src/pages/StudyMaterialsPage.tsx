@@ -33,6 +33,14 @@ const subjects = [
       { title: "MID-2", link: "https://drive.google.com/file/d/1ZEsMW-7NkNWbMOL9Bg3pDojnYv5Na1Ea/preview" },
     ],
   },
+  {
+    name: "ML",
+    units: [
+      { title: "Unit 1", link: "https://drive.google.com/file/d/1mOS6bwF81PiruDmvukYh77wPG-9NSiWz/preview" },
+      { title: "Unit 2", link: "https://drive.google.com/file/d/1OlYxJXBHvkq0Sm2dwVeMpEj_10pgL6uh/preview" },
+      { title: "Unit 3", link: "https://drive.google.com/file/d/1h2Yg8kSrEC3UxBM1JKfH9dJsNeDNdieS/preview" },
+    ],
+  },
 ];
 
 const containerVariants = {
