@@ -41,6 +41,13 @@ const subjects = [
       { title: "Unit 3", link: "https://drive.google.com/file/d/1h2Yg8kSrEC3UxBM1JKfH9dJsNeDNdieS/preview" },
     ],
   },
+  {
+    name: "OT",
+    units: [
+      { title: "Network Analysis - PERT", link: "https://drive.google.com/file/d/1haXs7J2LXLW6dONsZs_14Dz_mZBrtqy5/preview" },
+      { title: "Network Analysis - PERT & CPM", link: "https://drive.google.com/file/d/1gZ8Nf5GAJDoYbrkk537QHVMmz7lV3g55/preview" },
+    ],
+  },
 ];
 
 const containerVariants = {
