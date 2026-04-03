@@ -26,6 +26,13 @@ const subjects = [
       { title: "Unit 1", link: "https://drive.google.com/file/d/1VLcBZCZWVOIUme6LOdFqYi01N6LfjCWm/preview" },
     ],
   },
+  {
+    name: "ES",
+    units: [
+      { title: "MID-1", link: "https://drive.google.com/file/d/1eJvV21xeAJbrc0iieA0_fwGIK_s2G39E/preview" },
+      { title: "MID-2", link: "https://drive.google.com/file/d/1ZEsMW-7NkNWbMOL9Bg3pDojnYv5Na1Ea/preview" },
+    ],
+  },
 ];
 
 const containerVariants = {
