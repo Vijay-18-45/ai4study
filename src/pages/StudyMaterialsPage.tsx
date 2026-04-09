@@ -48,6 +48,7 @@ const subjects = [
     units: [
       { title: "Network Analysis - PERT", link: "https://drive.google.com/file/d/1haXs7J2LXLW6dONsZs_14Dz_mZBrtqy5/preview" },
       { title: "Network Analysis - PERT & CPM", link: "https://drive.google.com/file/d/1gZ8Nf5GAJDoYbrkk537QHVMmz7lV3g55/preview" },
+      { title: "NOTES", link: "https://drive.google.com/file/d/1uIUPQijwwFblLWhH2F4WJTSjF4FZApf1/preview" },
     ],
   },
 ];
