@@ -51,6 +51,15 @@ const subjects = [
       { title: "NOTES", link: "https://drive.google.com/file/d/1uIUPQijwwFblLWhH2F4WJTSjF4FZApf1/preview" },
     ],
   },
+  {
+    name: "PS",
+    units: [
+      { title: "Unit 1", link: "https://drive.google.com/file/d/16q6Gmjjuy8hObp35U6Lat55yKlFZA-kf/preview" },
+      { title: "Unit 2", link: "https://drive.google.com/file/d/1iknqTI-66EtRnjKKBfdC6MOUp0tXDg6U/preview" },
+      { title: "Unit 3", link: "https://drive.google.com/file/d/1AeRmq4RwhIGgYUHF2McwO972VwUdXQ0O/preview" },
+      { title: "Unit 4 & 5", link: "https://drive.google.com/file/d/1FFliIr-zP2_AiXIUxV5_vJPAhfcsdSsy/preview" },
+    ],
+  },
 ];
 
 const containerVariants = {
