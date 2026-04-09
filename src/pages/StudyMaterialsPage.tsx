@@ -143,7 +143,7 @@ export default function StudyMaterialsPage() {
                 <div className="text-center">
                   <h3 className="text-lg font-semibold text-foreground">{subject.name}</h3>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {subject.name === "ES" ? 5 : subject.units.reduce((count, u) => count + (u.title.includes("&") ? 2 : 1), 0)} unit{subject.units.length !== 1 ? "s" : ""}
+                    {["ES", "OT"].includes(subject.name) ? 5 : subject.units.reduce((count, u) => count + (u.title.includes("&") ? 2 : 1), 0)} unit{subject.units.length !== 1 ? "s" : ""}
                   </p>
                 </div>
               </motion.button>
